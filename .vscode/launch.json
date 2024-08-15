@@ -11,17 +11,36 @@
             "program": "${file}",
             "console": "integratedTerminal",
             "args": ["--log_suffix", "FDAE_seed0_",
-                    "--data_dir", "datasets/mpi3d_real_complex" 
-                    // --mask_entropy_weight ${mask_entropy_weight} --content_decorrelation_weight ${content_decorrelation_weight} \
-                    // --semantic_group_num ${group_num} --semantic_code_dim ${code_dim} --mask_code_dim ${code_dim} --semantic_code_adjust_dim ${code_dim} \
-                    // --additional_cond_map_layer_dim ${code_dim} \
-                    // --max_step ${max_step} --save_interval ${save_interval} --eval_interval ${eval_interval} --attention_resolutions 32,16,8 \
-                    // --global_batch_size ${batch} --lr 0.0001 \
-                    // --class_cond False --image_cond True --use_scale_shift_norm False --dropout 0.1 --image_size 64 \
-                    // --num_channels 192 --num_head_channels 64 --num_res_blocks 3 --resblock_updown True --schedule_sampler lognormal \
-                    // --use_fp16 True --weight_decay 0.0 --weight_schedule karras --debug_mode True \
-                    // --seed ${seed} \
-                    // --encoder_type ${encoder_type}
+                    "--data_dir", "datasets/mpi3d_real_complex", 
+                    "--mask_entropy_weight", "1.0e-4", 
+                    "--content_decorrelation_weight", "2.5e-5",
+                    "--semantic_group_num", "6",
+                    "--semantic_code_dim", "80",
+                    "--mask_code_dim", "80",
+                    "--semantic_code_adjust_dim", "80", 
+                    "--additional_cond_map_layer_dim", "80", 
+                    "--max_step", "30000", 
+                    "--save_interval", "10",
+                    "--eval_interval", "10", 
+                    "--attention_resolutions", "32,16,8", 
+                    "--global_batch_size", "32", 
+                    "--lr", "0.0001", 
+                    "--class_cond", "False", 
+                    "--image_cond", "True", 
+                    "--use_scale_shift_norm", "False", 
+                    "--dropout", "0.1", 
+                    "--image_size", "64", 
+                    "--num_channels", "192", 
+                    "--num_head_channels", "64", 
+                    "--num_res_blocks", "3", 
+                    "--resblock_updown", "True", 
+                    "--schedule_sampler", "lognormal", 
+                    "--use_fp16", "True", 
+                    "--weight_decay", "0.0", 
+                    "--weight_schedule", "karras", 
+                    "--debug_mode", "True", 
+                    "--seed", "0",
+                    "--encoder_type", "resnet18"
                     ]
         }
     ]
