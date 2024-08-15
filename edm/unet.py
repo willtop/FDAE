@@ -341,7 +341,9 @@ class QKVFlashAttention(nn.Module):
         **kwargs,
     ) -> None:
         from einops import rearrange
-        from flash_attn.flash_attention import FlashAttention
+        # original repo has the line below, which seemingly is deprecated
+        # from flash_attn.flash_attention import FlashAttention
+        from flash_attn import flash_attn_qkvpacked_func
 
         assert batch_first
         factory_kwargs = {"device": device, "dtype": dtype}
@@ -349,6 +351,8 @@ class QKVFlashAttention(nn.Module):
         self.embed_dim = embed_dim
         self.num_heads = num_heads
         self.causal = causal
+        # add previous arguments as fields
+        self.attention_dropout = attention_dropout
 
         assert (
             self.embed_dim % num_heads == 0
@@ -356,19 +360,20 @@ class QKVFlashAttention(nn.Module):
         self.head_dim = self.embed_dim // num_heads
         assert self.head_dim in [16, 32, 64], "Only support head_dim == 16, 32, or 64"
 
-        self.inner_attn = FlashAttention(
-            attention_dropout=attention_dropout, **factory_kwargs
-        )
+        # self.inner_attn = FlashAttention(
+            # attention_dropout=attention_dropout, **factory_kwargs
+        # )
+        self.inner_attn = flash_attn_qkvpacked_func
         self.rearrange = rearrange
 
     def forward(self, qkv, attn_mask=None, key_padding_mask=None, need_weights=False):
         qkv = self.rearrange(
             qkv, "b (three h d) s -> b s three h d", three=3, h=self.num_heads
         )
-        qkv, _ = self.inner_attn(
+        qkv = self.inner_attn(
             qkv,
-            key_padding_mask=key_padding_mask,
-            need_weights=need_weights,
+            # key_padding_mask=key_padding_mask,
+            # need_weights=need_weights,
             causal=self.causal,
         )
         return self.rearrange(qkv, "b s h d -> b (h d) s")

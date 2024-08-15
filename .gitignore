@@ -1,0 +1,7 @@
+datasets/
+**/*.pyc
+**/*.csv
+**/*.txt
+**/*.pdf
+**/*.npz
+logs/*

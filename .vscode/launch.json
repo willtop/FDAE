@@ -1,0 +1,28 @@
+{
+    // Use IntelliSense to learn about possible attributes.
+    // Hover to view descriptions of existing attributes.
+    // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "Python Debugger: Current File",
+            "type": "debugpy",
+            "request": "launch",
+            "program": "${file}",
+            "console": "integratedTerminal",
+            "args": ["--log_suffix", "FDAE_seed0_",
+                    "--data_dir", "datasets/mpi3d_real_complex" 
+                    // --mask_entropy_weight ${mask_entropy_weight} --content_decorrelation_weight ${content_decorrelation_weight} \
+                    // --semantic_group_num ${group_num} --semantic_code_dim ${code_dim} --mask_code_dim ${code_dim} --semantic_code_adjust_dim ${code_dim} \
+                    // --additional_cond_map_layer_dim ${code_dim} \
+                    // --max_step ${max_step} --save_interval ${save_interval} --eval_interval ${eval_interval} --attention_resolutions 32,16,8 \
+                    // --global_batch_size ${batch} --lr 0.0001 \
+                    // --class_cond False --image_cond True --use_scale_shift_norm False --dropout 0.1 --image_size 64 \
+                    // --num_channels 192 --num_head_channels 64 --num_res_blocks 3 --resblock_updown True --schedule_sampler lognormal \
+                    // --use_fp16 True --weight_decay 0.0 --weight_schedule karras --debug_mode True \
+                    // --seed ${seed} \
+                    // --encoder_type ${encoder_type}
+                    ]
+        }
+    ]
+}

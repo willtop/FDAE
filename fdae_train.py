@@ -143,7 +143,7 @@ def create_argparser():
         eval_only=False,
         use_fp16=False,
         fp16_scale_growth=1e-3,
-        available_gpus='-1',
+        available_gpus='0,1',
         debug_mode=False,
         log_suffix='',
         max_step=10000,
