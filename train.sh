@@ -13,7 +13,7 @@ content_decorrelation_weight=2.5e-5
 mask_entropy_weight=1.0e-4
 
 max_step=100000
-eval_interval=10000
+eval_interval=20000
 save_interval=5000
 code_dim=80
 batch=32

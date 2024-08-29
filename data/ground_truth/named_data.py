@@ -54,6 +54,8 @@ def get_named_ground_truth_data(name):
     return mpi3d.MPI3D(mode="mpi3d_real_complex")
   elif name == "mpi3d_real":
     return mpi3d.MPI3D(mode="mpi3d_real")
+  elif name == "mpi3d_toy":
+    return mpi3d.MPI3D(mode="mpi3d_toy")
   # elif name == "mpi3d":
   #   return mpi3d.MPI3D(mode="mpi3d_toy")
   # elif name == "mpi3d_realistic":
