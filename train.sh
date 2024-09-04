@@ -5,18 +5,18 @@
 data_ind=3
 data_dir_list=(datasets/shapes3d datasets/cars3d datasets/mpi3d_real_complex datasets/mpi3d_toy)
 # previously was (6,2,6)
-group_num_list=(6 2 10 6)
+group_num_list=(6 2 10 7)
 data_dir=${data_dir_list[${data_ind}]}
 group_num=${group_num_list[${data_ind}]}
 
-content_decorrelation_weight=2.5e-5
-mask_entropy_weight=1.0e-4
+content_decorrelation_weight=5e-5 #2.5e-5
+mask_entropy_weight=2.5e-4 #1.0e-4
 
-max_step=100000
-eval_interval=20000
-save_interval=5000
+max_step=50_000
+eval_interval=10_000
+save_interval=10_000
 code_dim=80
-batch=32
+batch=64
 encoder_type="resnet18"
 for seed in 0
 do

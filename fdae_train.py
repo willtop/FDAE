@@ -4,6 +4,7 @@ input the groundtruth factors as conditions to condition generator,
 freeze the diffusion model and update only the condition generator
 """
 import os, torch
+import torch.nn as nn
 import argparse
 from edm import dist_util, logger
 from edm.image_datasets import load_data
@@ -28,6 +29,12 @@ def setup_seed(seed):
     random.seed(seed)
     torch.backends.cudnn.deterministic = True
 
+class MyDataParallel(nn.DataParallel):
+    def __getattr__(self, name):
+        try:
+            return super().__getattr__(name)
+        except AttributeError:
+            return getattr(self.module, name)
 
 def main():
     args = create_argparser().parse_args()
@@ -53,6 +60,7 @@ def main():
     model_and_diffusion_kwargs['additional_cond_map_layer_dim'] = args.additional_cond_map_layer_dim
     model_and_diffusion_kwargs['sigma_weight'] = args.sigma_weight
     model, diffusion = create_model_and_diffusion(**model_and_diffusion_kwargs)
+    # model, diffusion = MyDataParallel(model), MyDataParallel(diffusion)
     model.to(dist_util.dev())
 
     # conditional generator
@@ -63,6 +71,7 @@ def main():
                                                    semantic_code_adjust_dim=args.semantic_code_adjust_dim,
                                                    use_fp16=args.use_fp16,
                                                    encoder_type=args.encoder_type)
+        # condition_generator = MyDataParallel(condition_generator)
         condition_generator.to(dist_util.dev())
     else:
         condition_generator = None

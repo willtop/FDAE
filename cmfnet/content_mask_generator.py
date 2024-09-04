@@ -24,7 +24,7 @@ def get_last_layer_output_channels(model):
 
 class ContentMaskGenerator(nn.Module):
     def __init__(self, semantic_group_num=2, semantic_code_dim=80, mask_code_dim=80,
-                 semantic_code_adjust_dim=80,
+                 semantic_code_adjust_dim=80, 
                  use_fp16=False, encoder_type='resnet18'):
         '''
         semantic_group_num: concept number N
