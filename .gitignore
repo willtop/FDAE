@@ -5,4 +5,5 @@ datasets/
 **/*.txt
 **/*.pdf
 **/*.npz
+**/*.h5
 logs/*
