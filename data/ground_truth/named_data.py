@@ -20,6 +20,7 @@ from __future__ import print_function
 from data.ground_truth import cars3d
 from data.ground_truth import mpi3d
 from data.ground_truth import shapes3d
+from data.ground_truth import celeba
 import gin
 
 
@@ -56,6 +57,8 @@ def get_named_ground_truth_data(name):
     return mpi3d.MPI3D(mode="mpi3d_real")
   elif name == "mpi3d_toy":
     return mpi3d.MPI3D(mode="mpi3d_toy")
+  elif name == "celeba":
+    return celeba.MyCelebA()
   # elif name == "mpi3d":
   #   return mpi3d.MPI3D(mode="mpi3d_toy")
   # elif name == "mpi3d_realistic":
