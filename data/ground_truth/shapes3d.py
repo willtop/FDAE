@@ -25,8 +25,8 @@ from six.moves import range
 # import tensorflow as tf
 import h5py
 
-
-SHAPES3D_PATH = os.path.join("data", '3dshapes.h5')
+# a bit dangerous using the relative path here
+SHAPES3D_PATH = os.path.join("data", 'shapes3d.h5')
 
 class Shapes3D(ground_truth_data.GroundTruthData):
   """Shapes3D dataset.
@@ -43,7 +43,7 @@ class Shapes3D(ground_truth_data.GroundTruthData):
   """
 
   def __init__(self):
-    data = h5py.File(SHAPES3D_PATH, 'r')
+    data = h5py.File(SHAPES3D_PATH, 'r') 
 #     images = data["images"].value
 #     labels = data["labels"].value
     images = data['images'][()]
