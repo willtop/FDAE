@@ -59,6 +59,8 @@ def main():
     model_and_diffusion_kwargs['loss_norm'] = args.loss_norm
     model_and_diffusion_kwargs['additional_cond_map_layer_dim'] = args.additional_cond_map_layer_dim
     model_and_diffusion_kwargs['sigma_weight'] = args.sigma_weight
+    # to adapt to varying image size (i.e. celebA)
+    model_and_diffusion_kwargs['image_size'] = args.image_size
     model, diffusion = create_model_and_diffusion(**model_and_diffusion_kwargs)
     # model, diffusion = MyDataParallel(model), MyDataParallel(diffusion)
     model.to(dist_util.dev())
@@ -69,6 +71,7 @@ def main():
                                                    semantic_code_dim=args.semantic_code_dim,
                                                    mask_code_dim=args.mask_code_dim,
                                                    semantic_code_adjust_dim=args.semantic_code_adjust_dim,
+                                                   img_size=args.image_size,
                                                    use_fp16=args.use_fp16,
                                                    encoder_type=args.encoder_type)
         # condition_generator = MyDataParallel(condition_generator)
