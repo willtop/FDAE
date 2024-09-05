@@ -135,7 +135,7 @@ def default_args():
 
 def evaluate_diffusion(dataset_name, train_args, log_dir, encoder, step, feature_dim=36):
     args = default_args()
-    assert dataset_name in ["shapes3d", "mpi3d_real_complex", "mpi3d_real", "mpi3d_toy", "cars3d"]
+    assert dataset_name in ["shapes3d", "mpi3d_real_complex", "mpi3d_real", "mpi3d_toy", "cars3d", "celeba"]
     args.dataset = dataset_name
     args.postprocessing_pca_dim = feature_dim // (train_args.semantic_group_num * 2)
 
