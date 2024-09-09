@@ -59,12 +59,14 @@ def main():
     from cmfnet.content_mask_generator import ContentMaskGenerator
     images = []
     data_list = os.listdir(args.data_dir)
-    for i, file in enumerate(data_list):
+    for i, filename in enumerate(data_list):
+        # see the order of images (not necessarily numerically ordered from listdir)
+        print(f"{i+1}th img: {filename}")
         if i == args.num_samples:
             break
-        if not file.endswith('jpg') and not file.endswith('png'):
+        if not filename.endswith('jpg') and not filename.endswith('png'):
             continue
-        img = Image.open(os.path.join(args.data_dir, file))
+        img = Image.open(os.path.join(args.data_dir, filename))
         arr = np.array(img)
         arr = arr.astype(np.float32) / 127.5 - 1
         arr = np.transpose(arr, [2, 0, 1])
@@ -78,6 +80,7 @@ def main():
                                                semantic_code_dim=train_args['semantic_code_dim'],
                                                mask_code_dim=train_args['mask_code_dim'],
                                                semantic_code_adjust_dim=train_args['semantic_code_dim'],
+                                               img_size=args.image_size,
                                                use_fp16=train_args['use_fp16'],
                                                encoder_type=train_args['encoder_type'],
                                                )

@@ -27,7 +27,7 @@ from six.moves import range
 import h5py
 
 # wouldn't clash with the images unpacked via prepare_celeba.py
-CELEBA_DIR = os.path.join("dataset", 'celeba') 
+CELEBA_DIR = os.path.join("datasets", 'celeba') 
 
 class MyCelebA(ground_truth_data.GroundTruthData):
     """CelebA dataset following GroundTruthData abstract class.

@@ -5,9 +5,19 @@ such that it's compatible with ImageFolder()
 """
 
 import os
+from tqdm import trange
+import torchvision.transforms as transforms
 from torchvision.datasets.celeba import CelebA
+from PIL import Image
 
 CELEBA_DIR = "datasets/celeba"
+
+celeba_transforms = transforms.Compose([
+            transforms.ToTensor(),
+            transforms.Resize(256),
+            transforms.CenterCrop(224),
+            transforms.ToPILImage()
+            ])
 
 if __name__ == "__main__":
     new_img_dir = os.path.join(os.path.dirname(os.path.abspath(__file__)), CELEBA_DIR)
@@ -29,22 +39,26 @@ if __name__ == "__main__":
     # move the images into the dataset folder
     print("Moving training CelebA images...")
     # the downloaded celeba images are named with idexing from 1
-    for i in range(1, n_train_imgs+1):
+    for i in trange(1, n_train_imgs+1):
         img_filename = f'{i:06d}.jpg'
         old_img_loc = os.path.join(orig_img_dir, img_filename)
         new_img_loc = os.path.join(new_img_dir, img_filename)
+        orig_img = Image.open(old_img_loc)
+        new_img = celeba_transforms(orig_img)
         assert os.path.isfile(old_img_loc)
         assert not os.path.isfile(new_img_loc)
-        os.rename(old_img_loc, new_img_loc)
+        new_img.save(new_img_loc)
     
     print("Moving testing CelebA images...")
-    for i in range(n_train_imgs+1, n_imgs+1):
+    for i in trange(n_train_imgs+1, n_imgs+1):
         img_filename = f'{i:06d}.jpg'
         old_img_loc = os.path.join(orig_img_dir, img_filename)
         new_img_loc = os.path.join(new_img_dir, img_filename)
+        orig_img = Image.open(old_img_loc)
+        new_img = celeba_transforms(orig_img)
         assert os.path.isfile(old_img_loc)
         assert not os.path.isfile(new_img_loc)
-        os.rename(old_img_loc, new_img_loc)
+        new_img.save(new_img_loc)
 
 
     print("Script finished!")
