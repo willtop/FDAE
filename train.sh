@@ -2,7 +2,7 @@
 # set data_ind (0, 1, 2) to select dataset in data_dir_list
 # testing checkpoint
 # --resume_checkpoint logs/2023-12-15-21-52-50-mpi3d_real_complex_FDAE_seed0_rank0/model100000.pt --eval_only True
-data_ind=4
+data_ind=3
 data_dir_list=(datasets/shapes3d datasets/cars3d datasets/mpi3d_real_complex datasets/mpi3d_toy datasets/celeba)
 image_size_list=(64 64 64 64 224)
 group_num_list=(6 2 10 7 10)
@@ -10,14 +10,14 @@ data_dir=${data_dir_list[${data_ind}]}
 image_size=${image_size_list[${data_ind}]}
 group_num=${group_num_list[${data_ind}]}
 
-content_decorrelation_weight=5e-5 # originally 2.5e-5
-mask_entropy_weight=2e-4 # originally 1.0e-4
+content_decorrelation_weight=3e-5 # originally 2.5e-5
+mask_entropy_weight=3e-4 # originally 1.0e-4
 
-max_step=100_000
+max_step=500_000
 eval_interval=20_000
-save_interval=5_000
-code_dim=120 # originally 80
-batch=10
+save_interval=10_000
+code_dim=100 # originally 80
+batch=64
 encoder_type="resnet18"
 for seed in 0
 do
