@@ -13,30 +13,30 @@
 # --num_channels 192 --num_head_channels 64 --num_res_blocks 3 --resblock_updown True --use_fp16 True
 
 # for celeba
-# python conditional_image_sample.py \
-# --model_path logs/2024-09-09-14-31-29-celeba_FDAE_seed0_rank0/model010000.pt \
-# --seed 0 \
-# --num_samples 5 \
-# --batch_size 5 \
-# --data_dir visualization/celeba_test \
-# --save_mask True \
-# --class_cond False \
-# --sigma_max 80 --sigma_min 0.002 --s_churn 0 --steps 40 --sampler heun --weight_schedule karras \
-# --attention_resolutions 32,16,8 --use_scale_shift_norm False --dropout 0.0 --image_size 224 \
-# --num_channels 192 --num_head_channels 64 --num_res_blocks 3 --resblock_updown True --use_fp16 True
-
-# for 64X64 datasets
 python conditional_image_sample.py \
---model_path logs/2024-09-11-14-53-36-mpi3d_toy_FDAE_seed0_rank0/model080000.pt \
+--model_path logs/2024-09-26-13-41-51-celeba_FDAE_seed0_rank0/model020000.pt \
 --seed 0 \
 --num_samples 5 \
 --batch_size 5 \
---data_dir visualization/mpi3d_toy_test \
+--data_dir visualization/celeba_test \
 --save_mask True \
 --class_cond False \
 --sigma_max 80 --sigma_min 0.002 --s_churn 0 --steps 40 --sampler heun --weight_schedule karras \
---attention_resolutions 32,16,8 --use_scale_shift_norm False --dropout 0.0 --image_size 64 \
+--attention_resolutions 32,16,8 --use_scale_shift_norm False --dropout 0.0 --image_size 128 \
 --num_channels 192 --num_head_channels 64 --num_res_blocks 3 --resblock_updown True --use_fp16 True
+
+# for 64X64 datasets
+# python conditional_image_sample.py \
+# --model_path logs/2024-09-12-13-45-05-mpi3d_toy_FDAE_seed0_rank0/model070000.pt \
+# --seed 0 \
+# --num_samples 5 \
+# --batch_size 5 \
+# --data_dir visualization/mpi3d_toy_test \
+# --save_mask True \
+# --class_cond False \
+# --sigma_max 80 --sigma_min 0.002 --s_churn 0 --steps 40 --sampler heun --weight_schedule karras \
+# --attention_resolutions 32,16,8 --use_scale_shift_norm False --dropout 0.0 --image_size 64 \
+# --num_channels 192 --num_head_channels 64 --num_res_blocks 3 --resblock_updown True --use_fp16 True
 
 # swapping content codes or mask codes for each pair of images in --data_dir
 # set swap_flag=True

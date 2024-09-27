@@ -11,11 +11,12 @@ from torchvision.datasets.celeba import CelebA
 from PIL import Image
 
 CELEBA_DIR = "datasets/celeba"
+FRESH_DOWNLOAD = False
 
 celeba_transforms = transforms.Compose([
             transforms.ToTensor(),
-            transforms.Resize(256),
-            transforms.CenterCrop(224),
+            transforms.Resize(140),
+            transforms.CenterCrop(128),
             transforms.ToPILImage()
             ])
 
@@ -24,14 +25,14 @@ if __name__ == "__main__":
     os.makedirs(new_img_dir, exist_ok=True)
     # load the CelebA using torchvision into the folder "celeba_dataset"
     # no need to specify the label type or transformation here
-    _ = CelebA(CELEBA_DIR, 
-                split="all",
-                download=True)
+    if FRESH_DOWNLOAD:
+        _ = CelebA(CELEBA_DIR, 
+                    split="all",
+                    download=True)
     
     # arrange the images by split
     orig_img_dir = os.path.join(os.path.dirname(os.path.abspath(__file__)),
                            CELEBA_DIR,
-                           "celeba",
                            "img_align_celeba")
 
     n_imgs = 202_599
