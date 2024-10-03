@@ -15,8 +15,8 @@ FRESH_DOWNLOAD = False
 
 celeba_transforms = transforms.Compose([
             transforms.ToTensor(),
-            transforms.Resize(140),
-            transforms.CenterCrop(128),
+            transforms.Resize(75),
+            transforms.CenterCrop(64),
             transforms.ToPILImage()
             ])
 
@@ -46,8 +46,6 @@ if __name__ == "__main__":
         new_img_loc = os.path.join(new_img_dir, img_filename)
         orig_img = Image.open(old_img_loc)
         new_img = celeba_transforms(orig_img)
-        assert os.path.isfile(old_img_loc)
-        assert not os.path.isfile(new_img_loc)
         new_img.save(new_img_loc)
     
     print("Moving testing CelebA images...")
@@ -57,8 +55,6 @@ if __name__ == "__main__":
         new_img_loc = os.path.join(new_img_dir, img_filename)
         orig_img = Image.open(old_img_loc)
         new_img = celeba_transforms(orig_img)
-        assert os.path.isfile(old_img_loc)
-        assert not os.path.isfile(new_img_loc)
         new_img.save(new_img_loc)
 
 

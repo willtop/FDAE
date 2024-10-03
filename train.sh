@@ -4,22 +4,23 @@
 # --resume_checkpoint logs/2023-12-15-21-52-50-mpi3d_real_complex_FDAE_seed0_rank0/model100000.pt --eval_only True
 data_ind=3
 data_dir_list=(datasets/shapes3d datasets/cars3d datasets/mpi3d_toy datasets/celeba)
-image_size_list=(64 64 64 128)
-group_num_list=(6 2 7 10)
+image_size_list=(64 64 64 64)
+group_num_list=(6 2 7 8)
 code_dim_list=(80 80 100 120)
 batch_size_list=(64 64 64 32)
+content_decorrelation_weight_list=(2.5e-5 2.5e-5 2.5e-5 5.0e-6)
+mask_entropy_weight_list=(3.5e-4 3.5e-4 3.5e-4 5.0e-5)
 data_dir=${data_dir_list[${data_ind}]}
 image_size=${image_size_list[${data_ind}]}
 group_num=${group_num_list[${data_ind}]}
 code_dim=${code_dim_list[${data_ind}]}
 batch_size=${batch_size_list[${data_ind}]}
-
-content_decorrelation_weight=2.5e-5 # originally 2.5e-5
-mask_entropy_weight=3.5e-4 # originally 1.0e-4
+content_decorrelation_weight=${content_decorrelation_weight_list[${data_ind}]} # originally 2.5e-5
+mask_entropy_weight=${mask_entropy_weight_list[${data_ind}]} # originally 1.0e-4
 
 max_step=500_000
-eval_interval=20_000
-save_interval=1_000
+eval_interval=50_000
+save_interval=2_000
 encoder_type="resnet18"
 for seed in 0
 do
