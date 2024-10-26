@@ -22,6 +22,7 @@ from data.ground_truth import ground_truth_data
 from data.ground_truth import util
 import numpy as np
 from torchvision.datasets.celeba import CelebA
+import torchvision.transforms as transforms
 from six.moves import range
 # import tensorflow as tf
 import h5py
@@ -36,15 +37,24 @@ class MyCelebA(ground_truth_data.GroundTruthData):
     def __init__(self):
         # since this is only called for evaluation, can use only test split 
         # for faster runtime
+        celeba_transforms = transforms.Compose([
+            transforms.ToTensor(),
+            transforms.Resize(75),
+            transforms.CenterCrop(64),
+            transforms.ToPILImage()
+            ])
         celeba = CelebA(CELEBA_DIR, 
                         split='test', 
                         target_type='attr',
+                        transform=celeba_transforms,
                         download=True)
 
-        images = np.stack([img.numpy() for img, _ in celeba], axis=0)
-        features = np.stack([attr.numpy() for _, attr in celeba], axis=0)
+        images = np.stack([np.array(img) for img, _ in celeba], axis=0)
+        features = np.stack([np.array(attr) for _, attr in celeba], axis=0)
         n_samples = 19_962
-        self.images = (images.reshape([n_samples, 224, 224, 3]).astype(np.float32) / 255.)
+        # after the transforms.ToPILImage(), when loaded into numpy array, the value range
+        # is still 255
+        self.images = (images.reshape([n_samples, 64, 64, 3]).astype(np.float32) / 255.)
         assert np.shape(features) == [n_samples, 40]
         self.factor_sizes = [2 for _ in range(40)]
         self.latent_factor_indices = list(range(40))
@@ -64,7 +74,7 @@ class MyCelebA(ground_truth_data.GroundTruthData):
 
     @property
     def observation_shape(self):
-        return [224, 224, 3]
+        return [64, 64, 3]
 
     def sample_factors(self, num, random_state):
         """Sample a batch of factors Y."""

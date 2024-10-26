@@ -4,12 +4,13 @@
 # --resume_checkpoint logs/2023-12-15-21-52-50-mpi3d_real_complex_FDAE_seed0_rank0/model100000.pt --eval_only True
 data_ind=3
 data_dir_list=(datasets/shapes3d datasets/cars3d datasets/mpi3d_toy datasets/celeba)
-image_size_list=(64 64 64 64)
-group_num_list=(6 2 7 8)
-code_dim_list=(80 80 100 120)
-batch_size_list=(64 64 64 32)
-content_decorrelation_weight_list=(2.5e-5 2.5e-5 2.5e-5 5.0e-6)
-mask_entropy_weight_list=(3.5e-4 3.5e-4 3.5e-4 5.0e-5)
+image_size_list=(64 64 64 224)
+group_num_list=(6 2 7 14)
+code_dim_list=(80 80 100 110)
+batch_size_list=(64 64 64 8)
+encoder_type_list=("resnet18" "resnet18" "resnet18" "resnet50")
+content_decorrelation_weight_list=(2.5e-5 2.5e-5 2.5e-5 2e-5)
+mask_entropy_weight_list=(3.5e-4 3.5e-4 3.5e-4 7.5e-5)
 data_dir=${data_dir_list[${data_ind}]}
 image_size=${image_size_list[${data_ind}]}
 group_num=${group_num_list[${data_ind}]}
@@ -17,11 +18,12 @@ code_dim=${code_dim_list[${data_ind}]}
 batch_size=${batch_size_list[${data_ind}]}
 content_decorrelation_weight=${content_decorrelation_weight_list[${data_ind}]} # originally 2.5e-5
 mask_entropy_weight=${mask_entropy_weight_list[${data_ind}]} # originally 1.0e-4
+encoder_type=${encoder_type_list[${data_ind}]}
 
+learning_rate=1e-5
 max_step=500_000
-eval_interval=50_000
-save_interval=2_000
-encoder_type="resnet18"
+eval_interval=100_000
+save_interval=1_000
 for seed in 0
 do
 python fdae_train.py --log_suffix FDAE_seed${seed}_ \
@@ -30,10 +32,10 @@ python fdae_train.py --log_suffix FDAE_seed${seed}_ \
 --semantic_group_num ${group_num} --semantic_code_dim ${code_dim} --mask_code_dim ${code_dim} --semantic_code_adjust_dim ${code_dim} \
 --additional_cond_map_layer_dim ${code_dim} \
 --max_step ${max_step} --save_interval ${save_interval} --eval_interval ${eval_interval} --attention_resolutions 32,16,8 \
---global_batch_size ${batch_size} --lr 0.0001 \
+--global_batch_size ${batch_size} --lr ${learning_rate} \
 --class_cond False --image_cond True --use_scale_shift_norm False --dropout 0.1 --image_size ${image_size} \
 --num_channels 192 --num_head_channels 64 --num_res_blocks 3 --resblock_updown True --schedule_sampler lognormal \
---use_fp16 True --weight_decay 0.0 --weight_schedule karras --debug_mode True \
+--use_fp16 True --weight_decay 0.0 --weight_schedule uniform --debug_mode True \
 --seed ${seed} \
 --encoder_type ${encoder_type}
 done
