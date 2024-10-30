@@ -80,7 +80,8 @@ def main():
                                                semantic_code_dim=train_args['semantic_code_dim'],
                                                mask_code_dim=train_args['mask_code_dim'],
                                                semantic_code_adjust_dim=train_args['semantic_code_dim'],
-                                               img_size=args.image_size,
+                                               img_size_input=train_args['image_size_input'],
+                                               img_size_gen=train_args['image_size_gen'],
                                                use_fp16=train_args['use_fp16'],
                                                encoder_type=train_args['encoder_type'],
                                                )
@@ -166,7 +167,7 @@ def main():
         sample = karras_sample(
             diffusion,
             model,
-            (args.batch_size, 3, args.image_size, args.image_size),
+            (args.batch_size, 3, args.image_size_gen, args.image_size_gen),
             steps=args.steps,
             model_kwargs=model_kwargs,
             device=dist_util.dev(),

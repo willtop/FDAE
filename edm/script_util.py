@@ -31,7 +31,8 @@ def model_and_diffusion_defaults():
     res = dict(
         sigma_min=0.002,
         sigma_max=80.0,
-        image_size=64,
+        image_size_input=64,
+        image_size_gen=64,
         num_channels=128,
         num_res_blocks=2,
         num_heads=4,
@@ -53,7 +54,8 @@ def model_and_diffusion_defaults():
 
 
 def create_model_and_diffusion(
-    image_size,
+    image_size_input,
+    image_size_gen,
     class_cond,
     learn_sigma,
     num_channels,
@@ -78,7 +80,7 @@ def create_model_and_diffusion(
     additional_cond_map_layer_dim=-1,
 ):
     model = create_model(
-        image_size,
+        image_size_gen,
         num_channels,
         num_res_blocks,
         channel_mult=channel_mult,
@@ -109,7 +111,7 @@ def create_model_and_diffusion(
 
 
 def create_model(
-    image_size,
+    image_size_gen,
     num_channels,
     num_res_blocks,
     channel_mult="",
@@ -128,28 +130,28 @@ def create_model(
     additional_cond_map_layer_dim=-1,
 ):
     if channel_mult == "":
-        if image_size == 512:
+        if image_size_gen == 512:
             channel_mult = (0.5, 1, 1, 2, 2, 4, 4)
-        elif image_size == 256:
+        elif image_size_gen == 256:
             channel_mult = (1, 1, 2, 2, 4, 4)
-        # added case for celebA, follow that of image_size=256
-        elif image_size == 224:
+        # added case for celebA
+        elif image_size_gen == 224:
             channel_mult = (1, 1, 2, 2, 4, 4)
-        elif image_size == 128:
+        elif image_size_gen == 128:
             channel_mult = (1, 1, 2, 3, 4)
-        elif image_size == 64:
+        elif image_size_gen == 64:
             channel_mult = (1, 2, 3, 4)
         else:
-            raise ValueError(f"unsupported image size: {image_size}")
+            raise ValueError(f"unsupported image size: {image_size_gen}")
     else:
         channel_mult = tuple(int(ch_mult) for ch_mult in channel_mult.split(","))
 
     attention_ds = []
     for res in attention_resolutions.split(","):
-        attention_ds.append(image_size // int(res))
+        attention_ds.append(image_size_gen // int(res))
 
     return UNetModel(
-        image_size=image_size,
+        image_size=image_size_gen,
         in_channels=3,
         model_channels=num_channels,
         out_channels=(3 if not learn_sigma else 6),

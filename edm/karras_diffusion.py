@@ -3,6 +3,7 @@ Based on: https://github.com/crowsonkb/k-diffusion
 """
 import numpy as np
 import torch as th
+import torchvision.transforms as transforms
 from piq import LPIPS
 from . import dist_util
 from .losses import content_decorrelation_loss, mask_entropy_loss
@@ -178,6 +179,26 @@ def karras_sample(
         sigmas = get_sigmas_karras(steps, sigma_min, sigma_max, rho, device=device)
 
     if image_input is not None:
+        # absent in the original code base: resize it!
+        if shape[2] == 224:
+            resize_t = transforms.Compose([
+                    transforms.Resize(256),
+                    transforms.CenterCrop(224)
+                    ])
+        elif shape[2] == 64:
+            resize_t = transforms.Compose([
+                    transforms.Resize(75),
+                    transforms.CenterCrop(64)
+                ])
+        else:
+            print("Invalid: ", shape[2])
+            exit(1)
+        image_input_resized = []
+        for img in image_input:
+            image_input_resized.append(resize_t(img))
+        image_input = th.stack(image_input_resized, dim=0) 
+        image_input.requires_grad_(False)
+        # end of the introduced code
         x_T = generator.randn(*shape, device=device) * sigma_max + image_input
     else:
         x_T = generator.randn(*shape, device=device) * sigma_max

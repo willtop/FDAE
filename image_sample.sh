@@ -14,7 +14,7 @@
 
 # for celeba
 python conditional_image_sample.py \
---model_path logs/2024-10-24-22-06-14-celeba_FDAE_seed0_rank0/model100000.pt \
+--model_path logs/2024-10-30-14-15-17-celeba_FDAE_seed0_rank0/model099000.pt \
 --seed 0 \
 --num_samples 5 \
 --batch_size 5 \
@@ -22,8 +22,9 @@ python conditional_image_sample.py \
 --save_mask True \
 --class_cond False \
 --sigma_max 80 --sigma_min 0.002 --s_churn 0 --steps 40 --sampler heun --weight_schedule karras \
---attention_resolutions 32,16,8 --use_scale_shift_norm False --dropout 0.0 --image_size 64 \
+--attention_resolutions 32,16,8 --use_scale_shift_norm False --dropout 0.0 --image_size_input 224 --image_size_gen 64 \
 --num_channels 192 --num_head_channels 64 --num_res_blocks 3 --resblock_updown True --use_fp16 True \
+# --use_image_input True 
 
 
 # for 64X64 datasets

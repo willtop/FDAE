@@ -5,6 +5,7 @@ import glob
 import blobfile as bf
 import torch as th
 import torch.distributed as dist
+import torchvision.transforms as transforms
 from torch.nn.parallel.distributed import DistributedDataParallel as DDP
 from torch.optim import RAdam
 import copy
@@ -47,6 +48,7 @@ class TrainLoop:
         debug_mode=False,
         max_step=10000,
         class_cond=False,
+        img_size_gen=64,
         condition_idx=[0],
         content_decorrelation_weight=-1.0,
         mask_entropy_weight=-1.0,
@@ -77,6 +79,21 @@ class TrainLoop:
         self.weight_decay = weight_decay
         self.lr_anneal_steps = lr_anneal_steps
         self.train_args = train_args
+
+        # additional resizing of the input images into diffusion model
+        if img_size_gen == 64:
+            # without center cropping, not necessarily resulting in a square image
+            # so has to be specific in resize size argument
+            self.pre_encoder_transform = transforms.Resize((64,64))
+        elif img_size_gen == 224:
+            self.pre_encoder_transform = transforms.Compose([
+                transforms.Resize(256),
+                transforms.CenterCrop(224)
+                ])
+        else:
+            print(f"Unimplemented image size: {img_size_gen}")
+            exit(1)
+
 
         if th.cuda.is_available() and not debug_mode:
             self.use_ddp = True
@@ -194,6 +211,9 @@ class TrainLoop:
             if self.step >= self.max_step:
                 break
             batch, cond = next(self.data)
+            # addition: firstly preprocess images into desired size
+            batch = self.pre_encoder_transform(batch)
+            cond['factors'] = self.pre_encoder_transform(cond['factors'])
             self.run_step(batch, cond)
             if self.step % self.log_interval == 0:
                 logger.dumpkvs()
@@ -210,7 +230,7 @@ class TrainLoop:
         if self.step % self.eval_interval != 0:
             evaluate_diffusion(self.dataset_name, self.train_args, get_blob_logdir(), self.ddp_conditional_generator, self.step)
 
-    def run_step(self, batch, cond):
+    def run_step(self, batch, cond):        
         self.forward_backward(batch, cond)
         took_step = self.mp_trainer.optimize(self.opt)
         if took_step:

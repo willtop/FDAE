@@ -1,6 +1,7 @@
 import torch
 import torch.nn as nn
 from torchvision.models import resnet50, resnet18
+import torchvision.transforms as transforms
 from cmfnet.generator import SeperateMaskGenerator
 
 
@@ -28,7 +29,8 @@ class ContentMaskGenerator(nn.Module):
                  semantic_code_dim=80, 
                  mask_code_dim=80,
                  semantic_code_adjust_dim=80, 
-                 img_size=64,
+                 img_size_input=64,
+                 img_size_gen=64,
                  use_fp16=False, encoder_type='resnet18'):
         '''
         semantic_group_num: concept number N
@@ -42,6 +44,18 @@ class ContentMaskGenerator(nn.Module):
         self.semantic_code_adjust_dim = semantic_code_adjust_dim
         self.semantic_code_dim = semantic_code_dim
         self.mask_code_dim = mask_code_dim
+        if img_size_input == 64:
+            # without center cropping, not necessarily resulting in a square image
+            # so has to be specific in resize size argument
+            self.pre_encoder_transform = transforms.Resize((64,64))
+        elif img_size_input == 224:
+            self.pre_encoder_transform = transforms.Compose([
+                transforms.Resize(256),
+                transforms.CenterCrop(224)
+                ])
+        else:
+            print(f"Unimplemented image size: {img_size_input}")
+            exit(1)
         if encoder_type == 'resnet18':
             self.encoder = resnet18(weights=None)
         elif encoder_type == 'resnet50':
@@ -62,7 +76,7 @@ class ContentMaskGenerator(nn.Module):
         self.mask_decoder = nn.Linear(encoder_out_dim, mask_code_dim * semantic_group_num)
         self.mask_generator = SeperateMaskGenerator(latent_dim=mask_code_dim, 
                                                     num_masks=semantic_group_num,
-                                                    img_size=img_size)
+                                                    img_size=img_size_gen)
 
     def forward(self, x, model_kwargs=None):
         swap_info = None  # swap_info is used for image editing by swapping latent codes
@@ -75,7 +89,10 @@ class ContentMaskGenerator(nn.Module):
             mask_group = swap_info['mask_group']
 
         x = x.type(self.dtype)
-
+        
+        # Addition: size it to square images
+        x = self.pre_encoder_transform(x)
+        
         features = self.encoder(x)
         features = features.view(features.size(0), -1)
         semantic_code = self.semantic_decoder1(features)

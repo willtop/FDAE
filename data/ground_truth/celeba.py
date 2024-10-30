@@ -55,7 +55,7 @@ class MyCelebA(ground_truth_data.GroundTruthData):
         # after the transforms.ToPILImage(), when loaded into numpy array, the value range
         # is still 255
         self.images = (images.reshape([n_samples, 64, 64, 3]).astype(np.float32) / 255.)
-        assert np.shape(features) == [n_samples, 40]
+        assert np.shape(features) == (n_samples, 40)
         self.factor_sizes = [2 for _ in range(40)]
         self.latent_factor_indices = list(range(40))
         self.num_total_factors = features.shape[1]

@@ -60,7 +60,8 @@ def main():
     model_and_diffusion_kwargs['additional_cond_map_layer_dim'] = args.additional_cond_map_layer_dim
     model_and_diffusion_kwargs['sigma_weight'] = args.sigma_weight
     # to adapt to varying image size (i.e. celebA)
-    model_and_diffusion_kwargs['image_size'] = args.image_size
+    model_and_diffusion_kwargs['image_size_input'] = args.image_size_input
+    model_and_diffusion_kwargs['image_size_gen'] = args.image_size_gen
     model, diffusion = create_model_and_diffusion(**model_and_diffusion_kwargs)
     # model, diffusion = MyDataParallel(model), MyDataParallel(diffusion)
     model.to(dist_util.dev())
@@ -71,7 +72,8 @@ def main():
                                                    semantic_code_dim=args.semantic_code_dim,
                                                    mask_code_dim=args.mask_code_dim,
                                                    semantic_code_adjust_dim=args.semantic_code_adjust_dim,
-                                                   img_size=args.image_size,
+                                                   img_size_input=args.image_size_input,
+                                                   img_size_gen=args.image_size_gen,
                                                    use_fp16=args.use_fp16,
                                                    encoder_type=args.encoder_type)
         # condition_generator = MyDataParallel(condition_generator)
@@ -97,7 +99,6 @@ def main():
     data = load_data(
         data_dir=args.data_dir,
         batch_size=batch_size,
-        image_size=args.image_size,
         class_cond=args.class_cond,
         factor_cond=args.factor_cond,
         image_cond=args.image_cond,
@@ -106,6 +107,7 @@ def main():
     )
 
     logger.log("training...")
+
     TrainLoop(
         model=model,
         diffusion=diffusion,
@@ -129,6 +131,7 @@ def main():
         debug_mode=args.debug_mode,
         max_step=args.max_step,
         class_cond=args.class_cond,
+        img_size_gen=args.image_size_gen,
         condition_idx=args.condition_idx,
         content_decorrelation_weight=args.content_decorrelation_weight,
         mask_entropy_weight=args.mask_entropy_weight,
