@@ -21,7 +21,7 @@ if __name__ == "__main__":
     # load the CelebA using torchvision into the folder "celeba_dataset"
     # no need to specify the label type or transformation here
     if FRESH_DOWNLOAD:
-        _ = CelebA(CELEBA_DIR, 
+        _ = CelebA("datasets", 
                     split="all",
                     download=True)
     
