@@ -87,7 +87,7 @@ class TrainLoop:
             self.pre_encoder_transform = transforms.Resize((64,64))
         elif img_size_gen == 224:
             self.pre_encoder_transform = transforms.Compose([
-                transforms.Resize(256),
+                transforms.Resize(276),
                 transforms.CenterCrop(224)
                 ])
         else:

@@ -1,7 +1,7 @@
 import numpy as np
 import matplotlib.pyplot as plt
 
-model_dir = "logs/2024-10-30-14-15-17-celeba_FDAE_seed0_rank0/"
+model_dir = "logs/2024-11-25-00-27-32-celeba_FDAE_seed0_rank0/"
 loss_file = "progress_celeba_FDAE_seed0_rank0.csv"
 
 loss_names_to_examine = ['content_decorrelation_loss',

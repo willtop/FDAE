@@ -43,7 +43,7 @@ class MyCelebA(ground_truth_data.GroundTruthData):
             transforms.CenterCrop(64),
             transforms.ToPILImage()
             ])
-        celeba = CelebA(CELEBA_DIR, 
+        celeba = CelebA("datasets", 
                         split='test', 
                         target_type='attr',
                         transform=celeba_transforms,
