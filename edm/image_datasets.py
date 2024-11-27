@@ -205,7 +205,11 @@ class ImageDataset(Dataset):
             pil_image.load()
         pil_image = pil_image.convert("RGB")
 
-
+        if 'animals' in path:
+            # it's an image from Animals with attributes dataset, with non-fixed size
+            # fix the size here
+            pil_image = pil_image.resize((1024, 1024))
+            
         #arr = pil_image.resize((self.resolution, self.resolution))
         #arr = center_crop_arr(arr, self.resolution)
 
