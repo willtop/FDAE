@@ -67,6 +67,8 @@ def main():
         if not filename.endswith('jpg') and not filename.endswith('png'):
             continue
         img = Image.open(os.path.join(args.data_dir, filename))
+        if "animals" in args.data_dir:
+            img = img.resize((1024,1024))
         arr = np.array(img)
         arr = arr.astype(np.float32) / 127.5 - 1
         arr = np.transpose(arr, [2, 0, 1])

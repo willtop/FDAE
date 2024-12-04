@@ -2,16 +2,16 @@
 # set data_ind (0, 1, 2, 3, 4) to select dataset in data_dir_list
 # testing checkpoint
 # --resume_checkpoint logs/2023-12-15-21-52-50-mpi3d_real_complex_FDAE_seed0_rank0/model100000.pt --eval_only True
-data_ind=4
+data_ind=3
 data_dir_list=(datasets/shapes3d datasets/cars3d datasets/mpi3d_toy datasets/celeba datasets/animals)
 image_size_input_list=(64 64 64 224 224)
 image_size_gen_list=(64 64 64 64 64)
-group_num_list=(6 2 7 16 10)
-code_dim_list=(80 80 100 70 80)
-batch_size_list=(64 64 64 16 32)
+group_num_list=(6 2 7 8 10)
+code_dim_list=(80 80 100 90 80)
+batch_size_list=(64 64 64 32 32)
 encoder_type_list=("resnet18" "resnet18" "resnet18" "resnet18" "resnet18")
-content_decorrelation_weight_list=(2.5e-5 2.5e-5 2.5e-5 2e-5 2e-5)
-mask_entropy_weight_list=(3.5e-4 3.5e-4 3.5e-4 2e-4 2e-4)
+content_decorrelation_weight_list=(2.5e-5 2.5e-5 2.5e-5 1e-5 2e-5)
+mask_entropy_weight_list=(3.5e-4 3.5e-4 3.5e-4 1e-5 2e-4)
 data_dir=${data_dir_list[${data_ind}]}
 image_size_input=${image_size_input_list[${data_ind}]}
 image_size_gen=${image_size_gen_list[${data_ind}]}
@@ -22,7 +22,7 @@ content_decorrelation_weight=${content_decorrelation_weight_list[${data_ind}]} #
 mask_entropy_weight=${mask_entropy_weight_list[${data_ind}]} # originally 1.0e-4
 encoder_type=${encoder_type_list[${data_ind}]}
 
-learning_rate=8.5e-5
+learning_rate=1e-4
 max_step=500_000
 eval_interval=500_000
 save_interval=2_000

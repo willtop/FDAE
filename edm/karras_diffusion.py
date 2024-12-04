@@ -182,7 +182,7 @@ def karras_sample(
         # absent in the original code base: resize it!
         if shape[2] == 224:
             resize_t = transforms.Compose([
-                    transforms.Resize(276),
+                    transforms.Resize(256),
                     transforms.CenterCrop(224)
                     ])
         elif shape[2] == 64:

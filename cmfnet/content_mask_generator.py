@@ -50,7 +50,7 @@ class ContentMaskGenerator(nn.Module):
             self.pre_encoder_transform = transforms.Resize((64,64))
         elif img_size_input == 224:
             self.pre_encoder_transform = transforms.Compose([
-                transforms.Resize(276),
+                transforms.Resize(256),
                 transforms.CenterCrop(224)
                 ])
         else:
