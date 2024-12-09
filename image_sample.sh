@@ -14,7 +14,7 @@
 
 # for celeba
 python conditional_image_sample.py \
---model_path logs/2024-12-03-11-23-25-celeba_FDAE_seed0_rank0/model082000.pt \
+--model_path logs/2024-12-08-21-32-02-celeba_FDAE_seed0_rank0/model176000.pt \
 --seed 0 \
 --num_samples 5 \
 --batch_size 5 \
