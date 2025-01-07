@@ -139,6 +139,9 @@ def create_model(
             channel_mult = (1, 1, 2, 2, 4, 4)
         elif image_size_gen == 128:
             channel_mult = (1, 1, 2, 3, 4)
+        # added case for smallNORB
+        elif image_size_gen == 96:
+            channel_mult = (1, 1, 2, 3, 4)
         elif image_size_gen == 64:
             channel_mult = (1, 2, 3, 4)
         else:

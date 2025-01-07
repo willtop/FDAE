@@ -85,6 +85,10 @@ class TrainLoop:
             # without center cropping, not necessarily resulting in a square image
             # so has to be specific in resize size argument
             self.pre_encoder_transform = transforms.Resize((64,64))
+        if img_size_gen == 96:
+            # without center cropping, not necessarily resulting in a square image
+            # so has to be specific in resize size argument
+            self.pre_encoder_transform = transforms.Resize((96,96))
         elif img_size_gen == 224:
             self.pre_encoder_transform = transforms.Compose([
                 transforms.Resize(256),

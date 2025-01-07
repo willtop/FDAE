@@ -48,7 +48,7 @@ if __name__ == "__main__":
                            MPI3D_TARGET_DIR)
     # since this is to be used for unsupervised deepcluster training
     # just have a pseudo class "cls1" created
-    os.makedirs(img_dir)
+    os.makedirs(img_dir, exist_ok=True)
 
     # save the images into corresponding split folder
     print(f"Saving training MPI3D {DSTYPE} images...")

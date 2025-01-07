@@ -185,6 +185,8 @@ def karras_sample(
                     transforms.Resize(256),
                     transforms.CenterCrop(224)
                     ])
+        elif shape[2] == 96:
+            resize_t = transforms.Resize((96,96))
         elif shape[2] == 64:
             resize_t = transforms.Compose([
                     transforms.Resize(75),
