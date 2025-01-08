@@ -21,7 +21,7 @@
 # --save_mask True \
 # --class_cond False \
 # --sigma_max 80 --sigma_min 0.002 --s_churn 0 --steps 40 --sampler heun --weight_schedule karras \
-# --attention_resolutions 32,16,8 --use_scale_shift_norm False --dropout 0.0 --image_size_input 224 --image_size_gen 64 \
+# --attention_resolutions 32,16,8 --use_scale_shift_norm False --dropout 0.0 --image_size_gen 64 \
 # --num_channels 192 --num_head_channels 64 --num_res_blocks 3 --resblock_updown True --use_fp16 True \
 # --use_image_input True 
 
@@ -35,7 +35,7 @@ python conditional_image_sample.py \
 --save_mask True \
 --class_cond False \
 --sigma_max 80 --sigma_min 0.002 --s_churn 0 --steps 40 --sampler heun --weight_schedule karras \
---attention_resolutions 32,16,8 --use_scale_shift_norm False --dropout 0.0 --image_size_input 96 --image_size_gen 96 \
+--attention_resolutions 32,16,8 --use_scale_shift_norm False --dropout 0.0 --image_size_gen 96 \
 --num_channels 192 --num_head_channels 64 --num_res_blocks 3 --resblock_updown True --use_fp16 True \
 
 

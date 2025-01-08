@@ -180,6 +180,8 @@ def karras_sample(
 
     if image_input is not None:
         # absent in the original code base: resize it!
+        # this part shouldn't be called recently
+        print("SHOULDN'T REACH HERE!")
         if shape[2] == 224:
             resize_t = transforms.Compose([
                     transforms.Resize(256),

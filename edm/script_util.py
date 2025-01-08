@@ -31,7 +31,6 @@ def model_and_diffusion_defaults():
     res = dict(
         sigma_min=0.002,
         sigma_max=80.0,
-        image_size_input=64,
         image_size_gen=64,
         num_channels=128,
         num_res_blocks=2,
@@ -54,7 +53,6 @@ def model_and_diffusion_defaults():
 
 
 def create_model_and_diffusion(
-    image_size_input,
     image_size_gen,
     class_cond,
     learn_sigma,
@@ -139,7 +137,7 @@ def create_model(
             channel_mult = (1, 1, 2, 2, 4, 4)
         elif image_size_gen == 128:
             channel_mult = (1, 1, 2, 3, 4)
-        # added case for smallNORB
+        # added case for smallNORB or celebA
         elif image_size_gen == 96:
             channel_mult = (1, 1, 2, 3, 4)
         elif image_size_gen == 64:

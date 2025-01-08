@@ -30,7 +30,6 @@
                     "--image_cond", "True", 
                     "--use_scale_shift_norm", "False", 
                     "--dropout", "0.1", 
-                    "--image_size_input", "224", 
                     "--image_size_gen", "64",
                     "--num_channels", "192", 
                     "--num_head_channels", "64", 

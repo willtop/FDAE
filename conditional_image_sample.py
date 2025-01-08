@@ -82,8 +82,8 @@ def main():
                                                semantic_code_dim=train_args['semantic_code_dim'],
                                                mask_code_dim=train_args['mask_code_dim'],
                                                semantic_code_adjust_dim=train_args['semantic_code_dim'],
-                                               img_size_input=train_args['image_size_input'],
                                                img_size_gen=train_args['image_size_gen'],
+                                               dataset_name=os.path.basename(train_args.data_dir),
                                                use_fp16=train_args['use_fp16'],
                                                encoder_type=train_args['encoder_type'],
                                                )

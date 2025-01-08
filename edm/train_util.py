@@ -80,23 +80,22 @@ class TrainLoop:
         self.lr_anneal_steps = lr_anneal_steps
         self.train_args = train_args
 
+        pre_encoder_transforms = []
+        if dataset_name in ["celeba", "animals"]:
+            pre_encoder_transforms.append(transforms.Resize(256))
+            pre_encoder_transforms.append(transforms.CenterCrop(224))
         # additional resizing of the input images into diffusion model
         if img_size_gen == 64:
-            # without center cropping, not necessarily resulting in a square image
-            # so has to be specific in resize size argument
-            self.pre_encoder_transform = transforms.Resize((64,64))
-        if img_size_gen == 96:
-            # without center cropping, not necessarily resulting in a square image
-            # so has to be specific in resize size argument
-            self.pre_encoder_transform = transforms.Resize((96,96))
+            pre_encoder_transforms.append(transforms.Resize((64,64)))
+        elif img_size_gen == 96:
+            pre_encoder_transforms.append(transforms.Resize((96,96)))
         elif img_size_gen == 224:
-            self.pre_encoder_transform = transforms.Compose([
-                transforms.Resize(256),
-                transforms.CenterCrop(224)
-                ])
+            pass
         else:
             print(f"Unimplemented image size: {img_size_gen}")
             exit(1)
+
+        self.pre_encoder_transform = transforms.Compose(pre_encoder_transforms)
 
 
         if th.cuda.is_available() and not debug_mode:

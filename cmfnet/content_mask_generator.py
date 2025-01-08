@@ -29,9 +29,10 @@ class ContentMaskGenerator(nn.Module):
                  semantic_code_dim=80, 
                  mask_code_dim=80,
                  semantic_code_adjust_dim=80, 
-                 img_size_input=64,
                  img_size_gen=64,
-                 use_fp16=False, encoder_type='resnet18'):
+                 dataset_name='unknown',
+                 use_fp16=False, 
+                 encoder_type='resnet18'):
         '''
         semantic_group_num: concept number N
         semantic_code_dim: dimensionality of content codes
@@ -44,21 +45,19 @@ class ContentMaskGenerator(nn.Module):
         self.semantic_code_adjust_dim = semantic_code_adjust_dim
         self.semantic_code_dim = semantic_code_dim
         self.mask_code_dim = mask_code_dim
-        if img_size_input == 64:
-            # without center cropping, not necessarily resulting in a square image
-            # so has to be specific in resize size argument
-            self.pre_encoder_transform = transforms.Resize((64,64))
-        elif img_size_input == 96:
-            # without center cropping, not necessarily resulting in a square image
-            # so has to be specific in resize size argument
-            self.pre_encoder_transform = transforms.Resize((96,96))
-        elif img_size_input == 224:
+        if dataset_name in ["celeba", "animals"]:
             self.pre_encoder_transform = transforms.Compose([
                 transforms.Resize(256),
                 transforms.CenterCrop(224)
                 ])
+        elif dataset_name in ["mpi3d_toy", "shapes3d"]:
+            # shouldn't change anything to images
+            self.pre_encoder_transform = transforms.Resize((64,64))
+        elif dataset_name == "norb":
+            # shouldn't change anything to images
+            self.pre_encoder_transform = transforms.Resize((96,96))            
         else:
-            print(f"Unimplemented image size: {img_size_input}")
+            print(f"Unimplemented for image set: {dataset_name}")
             exit(1)
         if encoder_type == 'resnet18':
             self.encoder = resnet18(weights=None)

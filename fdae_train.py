@@ -60,7 +60,6 @@ def main():
     model_and_diffusion_kwargs['additional_cond_map_layer_dim'] = args.additional_cond_map_layer_dim
     model_and_diffusion_kwargs['sigma_weight'] = args.sigma_weight
     # to adapt to varying image size (i.e. celebA)
-    model_and_diffusion_kwargs['image_size_input'] = args.image_size_input
     model_and_diffusion_kwargs['image_size_gen'] = args.image_size_gen
     model, diffusion = create_model_and_diffusion(**model_and_diffusion_kwargs)
     # model, diffusion = MyDataParallel(model), MyDataParallel(diffusion)
@@ -72,8 +71,8 @@ def main():
                                                    semantic_code_dim=args.semantic_code_dim,
                                                    mask_code_dim=args.mask_code_dim,
                                                    semantic_code_adjust_dim=args.semantic_code_adjust_dim,
-                                                   img_size_input=args.image_size_input,
                                                    img_size_gen=args.image_size_gen,
+                                                   dataset_name=os.path.basename(args.data_dir),
                                                    use_fp16=args.use_fp16,
                                                    encoder_type=args.encoder_type)
         # condition_generator = MyDataParallel(condition_generator)
