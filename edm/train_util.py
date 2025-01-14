@@ -85,16 +85,7 @@ class TrainLoop:
             pre_encoder_transforms.append(transforms.Resize(256))
             pre_encoder_transforms.append(transforms.CenterCrop(224))
         # additional resizing of the input images into diffusion model
-        if img_size_gen == 64:
-            pre_encoder_transforms.append(transforms.Resize((64,64)))
-        elif img_size_gen == 96:
-            pre_encoder_transforms.append(transforms.Resize((96,96)))
-        elif img_size_gen == 224:
-            pass
-        else:
-            print(f"Unimplemented image size: {img_size_gen}")
-            exit(1)
-
+        pre_encoder_transforms.append(transforms.Resize((img_size_gen,img_size_gen)))
         self.pre_encoder_transform = transforms.Compose(pre_encoder_transforms)
 
 

@@ -2,15 +2,15 @@
 # set data_ind (0, 1, 2, 3, 4) to select dataset in data_dir_list
 # testing checkpoint
 # --resume_checkpoint logs/2023-12-15-21-52-50-mpi3d_real_complex_FDAE_seed0_rank0/model100000.pt --eval_only True
-data_ind=3
-data_dir_list=(datasets/shapes3d datasets/cars3d datasets/mpi3d_toy datasets/celeba datasets/animals datasets/norb)
-image_size_gen_list=(64 64 64 96 64 96)
-group_num_list=(6 2 7 12 10 8)
-code_dim_list=(80 80 100 100 80 80)
-batch_size_list=(64 64 64 32 32 64)
-encoder_type_list=("resnet18" "resnet18" "resnet18" "resnet50" "resnet18" "resnet18")
-content_decorrelation_weight_list=(2.5e-5 2.5e-5 2.5e-5 8.5e-6 2e-5 2.5e-5)
-mask_entropy_weight_list=(3.5e-4 3.5e-4 3.5e-4 5e-5 2e-4 3.5e-4)
+data_ind=3 # 0-indexed
+data_dir_list=(datasets/shapes3d datasets/cars3d datasets/mpi3d_toy datasets/celeba datasets/animals datasets/norb datasets/birds)
+image_size_gen_list=(64 64 64 128 64 96 128)
+group_num_list=(6 2 7 12 10 8 9)
+code_dim_list=(80 80 100 90 80 80 110)
+batch_size_list=(64 64 64 32 32 64 32)
+encoder_type_list=("resnet18" "resnet18" "resnet18" "resnet18" "resnet18" "resnet18" "resnet18")
+content_decorrelation_weight_list=(2.5e-5 2.5e-5 2.5e-5 1e-5 2e-5 2.5e-5 2.5e-5)
+mask_entropy_weight_list=(3.5e-4 3.5e-4 3.5e-4 1e-4 2e-4 3.5e-4 5e-4)
 data_dir=${data_dir_list[${data_ind}]}
 image_size_gen=${image_size_gen_list[${data_ind}]}
 group_num=${group_num_list[${data_ind}]}
@@ -21,9 +21,9 @@ mask_entropy_weight=${mask_entropy_weight_list[${data_ind}]} # originally 1.0e-4
 encoder_type=${encoder_type_list[${data_ind}]}
 
 learning_rate=1e-5
-max_step=50_000
-eval_interval=50_000
-save_interval=500
+max_step=100_000
+eval_interval=${max_step}
+save_interval=1000
 for seed in 0
 do
 python fdae_train.py --log_suffix FDAE_seed${seed}_ \

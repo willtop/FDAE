@@ -56,6 +56,8 @@ class ContentMaskGenerator(nn.Module):
         elif dataset_name == "norb":
             # shouldn't change anything to images
             self.pre_encoder_transform = transforms.Resize((96,96))            
+        elif dataset_name == "birds":
+            self.pre_encoder_transform = transforms.Resize((224, 224))
         else:
             print(f"Unimplemented for image set: {dataset_name}")
             exit(1)

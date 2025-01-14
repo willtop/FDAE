@@ -151,6 +151,7 @@ class KarrasDenoiser:
 def karras_sample(
     diffusion,
     model,
+    dataset_name,
     shape,
     steps,
     clip_denoised=True,
@@ -179,27 +180,17 @@ def karras_sample(
         sigmas = get_sigmas_karras(steps, sigma_min, sigma_max, rho, device=device)
 
     if image_input is not None:
+        print("Generation conditioned on the original images!")
         # absent in the original code base: resize it!
-        # this part shouldn't be called recently
-        print("SHOULDN'T REACH HERE!")
-        if shape[2] == 224:
-            resize_t = transforms.Compose([
-                    transforms.Resize(256),
-                    transforms.CenterCrop(224)
-                    ])
-        elif shape[2] == 96:
-            resize_t = transforms.Resize((96,96))
-        elif shape[2] == 64:
-            resize_t = transforms.Compose([
-                    transforms.Resize(75),
-                    transforms.CenterCrop(64)
-                ])
-        else:
-            print("Invalid: ", shape[2])
-            exit(1)
+        sample_condition_transforms = []
+        if dataset_name in ['celeba', 'animals']:
+            sample_condition_transforms.append(transforms.Resize(256))
+            sample_condition_transforms.append(transforms.CenterCrop(224))        
+        sample_condition_transforms.append(transforms.Resize((shape[2],shape[2])))        
+        sample_condition_transforms = transforms.Compose(sample_condition_transforms)
         image_input_resized = []
         for img in image_input:
-            image_input_resized.append(resize_t(img))
+            image_input_resized.append(sample_condition_transforms(img))
         image_input = th.stack(image_input_resized, dim=0) 
         image_input.requires_grad_(False)
         # end of the introduced code

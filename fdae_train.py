@@ -157,7 +157,7 @@ def create_argparser():
         eval_only=False,
         use_fp16=False,
         fp16_scale_growth=1e-3,
-        available_gpus='0,1',
+        available_gpus=None, #'0,1', #set the CUDA_VISIBLE_DEVICES environment outside in command line
         debug_mode=False,
         log_suffix='',
         max_step=10000,
